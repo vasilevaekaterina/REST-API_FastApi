@@ -64,8 +64,13 @@ def search(
     price_min: Optional[float] = None,
     price_max: Optional[float] = None,
     author: Optional[str] = None,
+    offset: int = 0,
+    limit: Optional[int] = None,
 ) -> list[AdvertisementResponse]:
-    """Поиск объявлений по полям (все параметры опциональны)."""
+    """Поиск объявлений по полям (все параметры опциональны).
+
+    Пагинация: offset / limit.
+    """
     result = []
     for record in _advertisements.values():
         if title is not None and title.lower() not in record["title"].lower():
@@ -84,4 +89,6 @@ def search(
             continue
         result.append(AdvertisementResponse(**record))
     result.sort(key=lambda x: x.created_at, reverse=True)
-    return result
+    if limit is None:
+        return result[offset:]
+    return result[offset : offset + limit]
