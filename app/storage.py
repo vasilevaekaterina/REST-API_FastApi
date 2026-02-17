@@ -91,4 +91,4 @@ def search(
     result.sort(key=lambda x: x.created_at, reverse=True)
     if limit is None:
         return result[offset:]
-    return result[offset : offset + limit]
+    return result[offset: offset + limit]
